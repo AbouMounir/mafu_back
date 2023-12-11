@@ -7,30 +7,30 @@ const getUsers = (async(req, res) => {
 })
 
 const getUser = (async (req, res) => {
-    await User.findOne({ _id : req.params._id }).then(item => res.send(item));
+    await User.findOne({ _id : req.params.id }).then(item => res.send(item));
 })
 
 const deleteUser = (async (req, res) => {
-    const user = await User.findOne({ _id : req.params._id })
-    await User.deleteOne({_id : user._id.toString()}).then(result => res.send(result))
+    await User.deleteOne({_id : req.params.id}).then(result => res.send(result))
 })
 
 const updateUser = (async (req,res) => {
     try {
-        await User.findOne({ _id : req.params._id })
+        await User.findOne({ _id : req.params.id })
             .then(
                 user => {
+                    console.log(user);
                     if (req.body.userFirstName) {
-                        user.userNumber = req.body.userFirstName;
+                        user.userFirstName = req.body.userFirstName;
                     }
                     if (req.body.userLastName) {
-                        user.userNumber = req.body.userLastName;
+                        user.userLastName = req.body.userLastName;
                     }
                     if (req.body.userNumber) {
                         user.userNumber = req.body.userNumber;
                     }
                     if (req.body.userLocation) {
-                        user.userNumber = req.body.userLocation;
+                        user.userLocation = req.body.userLocation;
                     }
                     user.save();
                     res.send(user)
@@ -44,22 +44,22 @@ const updateUser = (async (req,res) => {
 
 const updateUserPassword = (async (req,res) => {
     try {
-        await User.findOne({ _id : req.params._id })
+        await User.findOne({ _id : req.params.id })
             .then(
-                user => {
-                    bcrypt.hash(req.body.currentPassword, 10)
-                        .then(async hash => {
-                            if (user.userPassword !== hash) {
-                                return res.status(500).json({ message: 'mot de passe incorrect' })
-                            }
-                            if (user.userPassword !== req.body.currentPassword) {
-                                return res.status(500).json({ message: 'entrez le même mot de passe' })
-                            }
-                            user.userPassword = hash
+                async user => {
+                    const valid = await bcrypt.compare(req.body.userCurrentPassword, user.userPassword)
+                    if (!valid) {
+                        return res.status(500).json({ message: 'mot de passe incorrect' })
+                    }
+                    if (req.body.usernewPassword !== req.body.usernewPasswordC) {
+                        return res.status(500).json({ message: 'entrez le même mot de passe' })
+                    }
+                    await bcrypt.hash(req.body.usernewPassword, 10)
+                        .then(hash_new => {
+                            user.userPassword = hash_new
                             user.save();
                             res.send(user)
                         })
-                        .catch(error => console.log(error))
                 }
             )
             .catch(error => console.log(error))
