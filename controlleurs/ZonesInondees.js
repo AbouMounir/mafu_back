@@ -3,7 +3,6 @@ import ZonesInondees from '../models/ZonesInondees.js';
 const createZoneInondee = (async(req, res) => {
     const zoneInondee = await new ZonesInondees({
         floodLocation: req.body.floodLocation,
-        floodHour: req.body.floodHour,
         floodDescription: req.body.floodDescription,
         floodIntensity: req.body.floodIntensity,
         floodImages: req.body.floodImages
@@ -15,15 +14,15 @@ const createZoneInondee = (async(req, res) => {
 })
 
 const getZonesInondees = (async(req, res) => {
-    await User.find({}).then(item => res.send(item))
+    await ZonesInondees.find({}).then(item => res.send(item))
 })
 
 const getZoneInondee = (async (req, res) => {
-    await User.findOne({ _id : req.params.id }).then(item => res.send(item));
+    await ZonesInondees.findOne({ _id : req.params.id }).then(item => res.send(item));
 })
 
 const deleteZoneInondee = (async (req, res) => {
-    await User.deleteOne({_id : req.params.id}).then(result => res.send(result))
+    await ZonesInondees.deleteOne({_id : req.params.id}).then(result => res.send(result))
 })
 
 export { createZoneInondee, deleteZoneInondee, getZoneInondee, getZonesInondees };

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ZonesInondees = mongoose.model('users', {
+const ZonesInondees = mongoose.model('zinondees', {
     floodLocation: {
         type: Map,
         of : String,
