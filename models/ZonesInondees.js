@@ -2,12 +2,14 @@ import mongoose from "mongoose";
 
 const ZonesInondees = mongoose.model('users', {
     floodLocation: {
-        type: String,
+        type: Map,
+        of : String,
         unique: true,
-        required: [true, "Your email is required"],
+        required: [true],
     },
-    floodHour: {
-        type: String,
+    floodDate: {
+        type: Date,
+        default : Date.now,
         required: [true, "Hour is required"],
     },
     floodDescription: {

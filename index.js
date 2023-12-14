@@ -4,6 +4,7 @@ import bodyParser from "body-parser";
 import dotenv from 'dotenv';
 import express from "express";
 import connectDb from "./database/db.js";
+import routerZoneInondee from "./routes/ZonesInondees.js";
 import routerUser from "./routes/users.js";
 
 
@@ -25,4 +26,5 @@ connectDb();
 
 
 app.use('/users', routerUser)
+app.use('/zonesInondees', routerZoneInondee)
 
