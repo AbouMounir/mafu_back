@@ -13,7 +13,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
-app.listen(4000, (err) => {
+app.listen(3000, (err) => {
     if (err) {
         console.log(err);
     }

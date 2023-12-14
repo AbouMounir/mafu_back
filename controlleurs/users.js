@@ -84,7 +84,10 @@ const signupUser = (async (req, res) => {
                     userPassword: hash,
                 })
                 await user.save()
-                    .then(() => res.status(201).json({ message: 'User enregistré !' }))
+                    .then(() => res.status(201).json({
+                        message: 'User enregistré !',
+                        data : user
+                    }))
                     .catch(error => res.status(400).json({ error }));
                 console.log(user);
             })
@@ -126,4 +129,3 @@ const signinUser = (async (req, res) => {
 })
 
 export { deleteUser, getUser, getUsers, signinUser, signupUser, updateUser, updateUserPassword };
-

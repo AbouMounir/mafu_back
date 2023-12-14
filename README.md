@@ -1,6 +1,6 @@
-# Hackhaton MTN back documentation
+# Mafu back documentation
 
-Cet article présente la documentation de l'API utilisé sur l'application Paykids et les différents cas d'utilisation.
+Cet article présente la documentation de l'API utilisé sur l'application Mafu et les différents cas d'utilisation.
 
 ## Installation
 
@@ -8,7 +8,7 @@ Cet article présente la documentation de l'API utilisé sur l'application Payki
 
 ##  démarrer l'application
 
-    node index.js
+    nodemon index.js
 
 # REST API
 

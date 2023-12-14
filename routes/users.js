@@ -17,4 +17,5 @@ export default routerUser
 "userNumber":"+2250777029626"
 "userFirstName":"Krouma"
 "userLastName":"Mamadou"
-userPassword:"5678" */
+"userPassword":"5678"
+*/
