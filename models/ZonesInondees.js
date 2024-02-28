@@ -2,27 +2,24 @@ import mongoose from "mongoose";
 
 const ZonesInondees = mongoose.model('zinondees', {
     floodLocation: {
-        type: Map,
-        of : String,
-        unique: true,
-        required: [true],
+        longitude: String,
+        latitude: String
     },
     floodDate: {
         type: Date,
-        default : Date.now,
-        required: [true, "Hour is required"],
+        default : Date.now
     },
     floodDescription: {
         type: String,
     },
+
     floodIntensity: {
         type: String,
-        required: [true, "Your intensity is required"],
     },
     floodImages: {
-        type: [String],
-        default: []
-    },
+        imagePath: String,
+        data: Buffer
+    }
 });
 
 export default ZonesInondees ;
