@@ -1,0 +1,160 @@
+{
+	"info": {
+		"_postman_id": "96b3f455-b1cb-479e-af22-2d3b1c8cab41",
+		"name": "mafu",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30572017"
+	},
+	"item": [
+		{
+			"name": "Zinondees",
+			"item": [
+				{
+					"name": "createZoneInondee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "longitude",
+									"value": "\"1.25652\"",
+									"type": "text"
+								},
+								{
+									"key": "floodDescription",
+									"value": "req.body.floodDescription",
+									"type": "text"
+								},
+								{
+									"key": "floodIntensity",
+									"value": "req.body.floodIntensity",
+									"type": "text"
+								},
+								{
+									"key": "floodImages",
+									"type": "file",
+									"src": "postman-cloud:///1eebb087-f06f-4940-add6-2eedeaa4ac2f"
+								},
+								{
+									"key": "latitude",
+									"value": "\"-1.325\"",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/zonesInondees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"zonesInondees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getZoneInondeeInfo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "floodLocation",
+									"value": "req.body.floodLocation",
+									"type": "text"
+								},
+								{
+									"key": "floodDescription",
+									"value": "req.body.floodDescription",
+									"type": "text"
+								},
+								{
+									"key": "floodIntensity",
+									"value": "req.body.floodIntensity",
+									"type": "text"
+								},
+								{
+									"key": "floodImages",
+									"value": "f",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/zonesInondees/65de19afb53ef36e51aa6ae0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"zonesInondees",
+								"65de19afb53ef36e51aa6ae0"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getZoneInondeeImage",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "floodLocation",
+									"value": "req.body.floodLocation",
+									"type": "text"
+								},
+								{
+									"key": "floodDescription",
+									"value": "req.body.floodDescription",
+									"type": "text"
+								},
+								{
+									"key": "floodIntensity",
+									"value": "req.body.floodIntensity",
+									"type": "text"
+								},
+								{
+									"key": "floodImages",
+									"value": "f",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/zonesInondees/65de19afb53ef36e51aa6ae0",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"zonesInondees",
+								"65de19afb53ef36e51aa6ae0"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

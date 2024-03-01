@@ -49,7 +49,20 @@ const createZoneInondee = ( async (req, res) => {
 })
 
 const getZonesInondees = (async (req, res) => {
-    await ZonesInondees.find({}).then(item => res.send(item))
+
+    const fonc = (item) => {
+        return {
+            "floodLocation":item.floodLocation,
+            "floodDescription":item.floodDescription,
+            "floodImages":item.floodImages.imagePath,
+            "floodIntensity": item.floodIntensity,
+            "floodDate": item.floodDate
+        }
+    }
+    const zonesInondees = await ZonesInondees.find({});
+    const zi = zonesInondees.map(fonc)
+    console.log(zi);
+    res.send(zonesInondees)
 })
 
 const getZoneInondeeInfo = (async (req, res) => {
