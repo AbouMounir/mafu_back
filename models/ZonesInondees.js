@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
 const ZonesInondees = mongoose.model('zinondees', {
+    floodScene: {
+        type: String
+    },
     floodLocation: {
         longitude: String,
         latitude: String

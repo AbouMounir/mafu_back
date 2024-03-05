@@ -26,6 +26,7 @@ const createZoneInondee = ( async (req, res) => {
         }
 
         const zoneInondee = await new ZonesInondees({
+            floodScene:req.body.floodScene,
             floodLocation: {
                 longitude: req.body.longitude,
                 latitude: req.body.latitude
@@ -52,6 +53,7 @@ const getZonesInondees = (async (req, res) => {
 
     const fonc = (item) => {
         return {
+            "floodScene": item.floodScene,
             "floodLocation":item.floodLocation,
             "floodDescription":item.floodDescription,
             "floodImages":item.floodImages.imagePath,
@@ -71,7 +73,9 @@ const getZoneInondeeInfo = (async (req, res) => {
             {
                 res.status(201).json({
                     data: {
+                        floodScene: item.floodScene,
                         floodLocation: item.floodLocation,
+                        floodImages:item.floodDescription.imagePath,
                         floodDescription: item.floodDescription,
                         floodIntensity: item.floodIntensity,
                         floodDate: item.floodDate
