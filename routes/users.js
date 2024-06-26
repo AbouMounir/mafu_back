@@ -1,12 +1,13 @@
 import express from 'express';
-import { deleteUser, getUser, getUsers, signinUser, signupUser, updateUser, updateUserPassword } from '../controlleurs/users.js';
+import { authMiddleware } from '../controlleurs/mildeware/authMiddleware.js';
+import { deleteUser, getUser, signinUser, signupUser, updateUser, updateUserPassword } from '../controlleurs/users.js';
 const routerUser = express.Router()
 
-routerUser.get(('/'), getUsers)
-routerUser.get(('/:id'), getUser)
-routerUser.delete(('/:id'), deleteUser)
-routerUser.put(('/update-user/:id'), updateUser)
-routerUser.put(('/update-password/:id'), updateUserPassword)
+//routerUser.get(('/'), getUsers)
+routerUser.get(('/current'),authMiddleware, getUser)
+routerUser.delete(('/current'),authMiddleware, deleteUser)
+routerUser.put(('/update'),authMiddleware, updateUser)
+routerUser.put(('/update-password'),authMiddleware, updateUserPassword)
 routerUser.post(('/signup'), signupUser)
 routerUser.post(('/signin'), signinUser)
 

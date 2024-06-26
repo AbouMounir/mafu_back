@@ -4,24 +4,28 @@ const User = mongoose.model('users', {
     userEmail: {
         type: String,
         unique: true,
-        required: [true, "Your email is required"],
+        default : ""
     },
     userNumber: {
         type: String,
         unique: true,
-        required: [true, "Your number is required"],
+        default : ""
     },
     userFirstName: {
         type: String,
-        required: [true, "Your firstname is required"],
+        default : ""
     },
     userLastName: {
         type: String,
-        required: [true, "Your lastname is required"],
+        default : ""
     },
     userPassword: {
         type: String,
-        required: [true, "Your password is required"],
+        default : ""
+    },
+    image : {
+        type : String,
+        default : ""
     },
     userLocation: {
         type: String,

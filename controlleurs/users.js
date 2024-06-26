@@ -1,39 +1,50 @@
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import User from '../models/users.js';
 
 
-const getUsers = (async(req, res) => {
-    await User.find({}).then(item => res.send(item))
-})
+// Fonction pour créer un jeton JWT
+const createToken = (userId) => {
+    return jwt.sign({ userId }, process.env.JWT_SECRET, {
+        expiresIn: "720h", // Durée de validité du token
+    });
+};
+
+/* const getUsers = (async (req, res) => {
+    await User.find({}).then(item => res.status(200).json({ data: item }))
+}) */
 
 const getUser = (async (req, res) => {
-    await User.findOne({ _id : req.params.id }).then(item => res.send(item));
+    console.log(req.userId);
+    const user = await User.findOne({ _id: req.userId })
+    res.status(200).json({
+        data: user
+    })
 })
 
 const deleteUser = (async (req, res) => {
-    await User.deleteOne({_id : req.params.id}).then(result => res.send(result))
+    User.deleteOne({ _id: req.req.userId })
+        .then(result => res.status(200).json({
+            data: result
+        }))
 })
 
-const updateUser = (async (req,res) => {
+const updateUser = (async (req, res) => {
     try {
-        await User.findOne({ _id : req.params.id })
+        User.findOne({ _id: req.userId })
             .then(
-                user => {
+                async user => {
                     console.log(user);
-                    if (req.body.userFirstName) {
-                        user.userFirstName = req.body.userFirstName;
-                    }
-                    if (req.body.userLastName) {
-                        user.userLastName = req.body.userLastName;
-                    }
-                    if (req.body.userNumber) {
-                        user.userNumber = req.body.userNumber;
-                    }
-                    if (req.body.userLocation) {
-                        user.userLocation = req.body.userLocation;
-                    }
-                    user.save();
-                    res.send(user)
+                    user.image = req.body.image || user.image;
+                    user.userEmail = req.body.userEmail || user.userEmail;
+                    user.userFirstName = req.body.userFirstName || user.userFirstName;
+                    user.userLastName = req.body.userLastName || user.userLastName;
+                    user.userNumber = req.body.userNumber || user.userNumber;
+                    user.userLocation = req.body.userLocation || user.userLocation;
+                    await user.save();
+                    res.status(200).json({
+                        data: user
+                    })
                 }
             )
             .catch(error => console.log(error))
@@ -42,27 +53,29 @@ const updateUser = (async (req,res) => {
     }
 })
 
-const updateUserPassword = (async (req,res) => {
+const updateUserPassword = (async (req, res) => {
     try {
-        await User.findOne({ _id : req.params.id })
-            .then(
-                async user => {
-                    const valid = await bcrypt.compare(req.body.userCurrentPassword, user.userPassword)
+        const user = await User.findOne({ _id: req.userId })
+        if (!user) {
+            return res.json({ message: "User don't exists" });
+        }
+        if (user) {
+            const valid = await bcrypt.compare(req.body.userPassword, user.userPassword)
                     if (!valid) {
                         return res.status(500).json({ message: 'mot de passe incorrect' })
                     }
                     if (req.body.usernewPassword !== req.body.usernewPasswordC) {
                         return res.status(500).json({ message: 'entrez le même mot de passe' })
                     }
-                    await bcrypt.hash(req.body.usernewPassword, 10)
+                    bcrypt.hash(req.body.usernewPassword, 10)
                         .then(hash_new => {
                             user.userPassword = hash_new
                             user.save();
-                            res.send(user)
+                            res.status(200).json({
+                                data: user
+                            })
                         })
-                }
-            )
-            .catch(error => console.log(error))
+        }
     } catch (error) {
         console.log(error);
     }
@@ -73,10 +86,13 @@ const signupUser = (async (req, res) => {
     if (existingUser) {
         return res.json({ message: "User already exists" });
     }
-    if (req.body.userPassword == req.body.userPasswordC) {
+    if (req.body.userPassword !== req.body.userPasswordC) {
+        return res.status(500).json({ message: 'mot de passe incorrect' })
+    }
+    if (req.body.userPassword === req.body.userPasswordC) {
         bcrypt.hash(req.body.userPassword, 10)
             .then(async hash => {
-                const user = await new User({
+                const user = new User({
                     userEmail: req.body.userEmail,
                     userNumber: req.body.userNumber,
                     userFirstName: req.body.userFirstName,
@@ -84,48 +100,38 @@ const signupUser = (async (req, res) => {
                     userPassword: hash,
                 })
                 await user.save()
-                    .then(() => res.status(201).json({
-                        message: 'User enregistré !',
-                        data : user
-                    }))
-                    .catch(error => res.status(400).json({ error }));
-                console.log(user);
+                const token = createToken(user._id)
+                res.status(201).json({
+                    message: 'User registered !',
+                    data: user,
+                    token: token
+                })
             })
-            .catch(error => res.status(500).json({ error }))
-    } else {
-        res.status(500).json({ message: 'mot de passe incorrect' })
+            .catch(err => res.status(500).json({ error: err }))
     }
-
 });
 
 const signinUser = (async (req, res) => {
-    console.log('signin');
     await User.findOne({ userEmail: req.body.userEmail })
         .then(async user => {
             if (user == null) {
                 res.status(500).json({ message: 'mot de passe et/ou email incorrect' })
             } else {
                 const valid = await bcrypt.compare(req.body.userPassword, user.userPassword)
-                console.log(valid);
                 if (valid == false) {
-                    res.status(400).json({ message: 'mot de passe et/ou email incorrect' })
+                    res.status(500).json({ message: 'mot de passe et/ou email incorrect' })
                 } else {
                     console.log(user.userPassword);
+                    const token = createToken(user._id)
                     res.status(201).json({
-                        message: 'connected',
-                        data : user
-                        /* userID: user._id,
-                        token: jwt.sign(
-                            user._id,
-                            'RANDOM_TOKEN_SECRET',
-                            { expiresIn: '24h' }
-                        ) */
+                        message: 'User conneted!',
+                        data: user,
+                        token: token
                     })
                 }
             }
-        }
-        )
-        .catch(error => res.json({ error }))
+        })
+        .catch(error => res.json({ error: error }))
 })
 
-export { deleteUser, getUser, getUsers, signinUser, signupUser, updateUser, updateUserPassword };
+export { deleteUser, getUser, signinUser, signupUser, updateUser, updateUserPassword };
