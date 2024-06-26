@@ -97,7 +97,7 @@ const signupUser = (async (req, res) => {
                     userNumber: req.body.userNumber,
                     userFirstName: req.body.userFirstName,
                     userLastName: req.body.userLastName,
-                    userPassword: hash,
+                    userPassword: hash
                 })
                 await user.save()
                 const token = createToken(user._id)
@@ -112,26 +112,24 @@ const signupUser = (async (req, res) => {
 });
 
 const signinUser = (async (req, res) => {
-    await User.findOne({ userEmail: req.body.userEmail })
-        .then(async user => {
-            if (user == null) {
-                res.status(500).json({ message: 'mot de passe et/ou email incorrect' })
-            } else {
-                const valid = await bcrypt.compare(req.body.userPassword, user.userPassword)
-                if (valid == false) {
-                    res.status(500).json({ message: 'mot de passe et/ou email incorrect' })
-                } else {
-                    console.log(user.userPassword);
-                    const token = createToken(user._id)
-                    res.status(201).json({
-                        message: 'User conneted!',
-                        data: user,
-                        token: token
-                    })
-                }
-            }
-        })
-        .catch(error => res.json({ error: error }))
+    const user = await User.findOne({ userEmail: req.body.userEmail })
+    if (!user) {
+        res.status(500).json({ message: 'mot de passe et/ou email incorrect' })
+    }
+    if (user) {
+        const valid = await bcrypt.compare(req.body.userPassword, user.userPassword)
+        if (valid == false) {
+            res.status(500).json({ message: 'mot de passe et/ou email incorrect' })
+        } else {
+            console.log(user.userPassword);
+            const token = createToken(user._id)
+            res.status(201).json({
+                message: 'User conneted!',
+                data: user,
+                token: token
+            })
+        }
+    }
 })
 
 export { deleteUser, getUser, signinUser, signupUser, updateUser, updateUserPassword };

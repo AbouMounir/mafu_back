@@ -9,5 +9,4 @@ routerZoneInondee.get(('/images/:id'), getZoneInondeeImage)
 routerZoneInondee.delete(('/:id'), deleteZoneInondee)
 //routerZoneInondee.put(('/update/:id'), updateZoneInondee)
 
-
 export default routerZoneInondee
