@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ZonesInondees = mongoose.model('zinondees', {
+const FloodZone = mongoose.model('zones_inondees', {
     floodScene: {
         type: String
     },
@@ -14,15 +14,17 @@ const ZonesInondees = mongoose.model('zinondees', {
     },
     floodDescription: {
         type: String,
+        default : ""
     },
 
     floodIntensity: {
         type: String,
+        default : ""
     },
-    floodImages: {
-        imagePath: String,
-        data: Buffer
+    floodImage: {
+        type: String,
+        default : ""
     }
 });
 
-export default ZonesInondees ;
+export default FloodZone ;
