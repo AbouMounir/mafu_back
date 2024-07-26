@@ -22,6 +22,53 @@ const getUser = (async (req, res) => {
     })
 })
 
+const verifyingUserNumber = (async (req, res) => {
+    const user = await User.findOne({ userNumber: req.body.userNumber })
+    if (user) {
+        res.status(200).json({
+            message: "user found"
+        })
+    }
+    res.status(400).json({
+        message: "user no found"
+    })
+})
+
+const updateLandlordPasswordAfterForgotPassword = (async (req, res) => {
+    try {
+        await User.findOne({ userNumber: req.body.userNumber })
+            .then(
+                async user => {
+                    if (!user) {
+                        return res.status(404).json({ message: "user not found" })
+                    }
+                    await bcrypt.hash(req.body.password, 10)
+                        .then(hash_new => {
+                            user.password = hash_new
+                            user.save();
+                            return res.json({ data: user })
+                        }).catch(error => {
+                            return res.json({
+                                message: "bscypt compare catch",
+                                error: error.message
+                            })
+                        })
+                }
+            )
+            .catch(error => {
+                return res.json({
+                    message: "findOne catch",
+                    error: error.message
+                })
+            })
+    } catch (error) {
+        return res.json({
+            message: "updateLandlordPasswordAfterForgotPassword doesn't work",
+            error: error.message
+        })
+    }
+})
+
 const deleteUser = (async (req, res) => {
     User.deleteOne({ _id: req.req.userId })
         .then(result => res.status(200).json({
@@ -64,10 +111,10 @@ const updateUserPassword = (async (req, res) => {
                     if (!valid) {
                         return res.status(500).json({ message: 'mot de passe incorrect' })
                     }
-                    if (req.body.usernewPassword !== req.body.usernewPasswordC) {
+                    if (req.body.userNewPassword !== req.body.userNewPasswordC) {
                         return res.status(500).json({ message: 'entrez le même mot de passe' })
                     }
-                    bcrypt.hash(req.body.usernewPassword, 10)
+                    bcrypt.hash(req.body.userNewPassword, 10)
                         .then(hash_new => {
                             user.userPassword = hash_new
                             user.save();
@@ -132,4 +179,5 @@ const signinUser = (async (req, res) => {
     }
 })
 
-export { deleteUser, getUser, signinUser, signupUser, updateUser, updateUserPassword };
+export { deleteUser, getUser, signinUser, signupUser, updateLandlordPasswordAfterForgotPassword, updateUser, updateUserPassword, verifyingUserNumber };
+
