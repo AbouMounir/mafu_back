@@ -42,7 +42,10 @@ const updateLandlordPasswordAfterForgotPassword = (async (req, res) => {
                     if (!user) {
                         return res.status(404).json({ message: "user not found" })
                     }
-                    await bcrypt.hash(req.body.password, 10)
+                    if (req.body.userNewPassword !== req.body.userNewPasswordC) {
+                        return res.status(500).json({ message: 'entrez le même mot de passe' })
+                    }
+                    await bcrypt.hash(req.body.userNewPassword, 10)
                         .then(hash_new => {
                             user.password = hash_new
                             user.save();
