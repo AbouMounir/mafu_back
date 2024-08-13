@@ -43,12 +43,12 @@ const updateLandlordPasswordAfterForgotPassword = (async (req, res) => {
                         return res.status(404).json({ message: "user not found" })
                     }
                     if (req.body.userNewPassword !== req.body.userNewPasswordC) {
-                        return res.status(500).json({ message: 'entrez le même mot de passe' })
+                        return res.status(400).json({ message: 'entrez le même mot de passe' })
                     }
                     await bcrypt.hash(req.body.userNewPassword, 10)
-                        .then(hash_new => {
-                            user.password = hash_new
-                            user.save();
+                        .then(async hash_new => {
+                            user.userPassword = hash_new
+                            await user.save();
                             return res.status(200).json({ data: user })
                         }).catch(error => {
                             return res.status(500).json({
@@ -112,7 +112,7 @@ const updateUserPassword = (async (req, res) => {
         if (user) {
             const valid = await bcrypt.compare(req.body.userPassword, user.userPassword)
                     if (!valid) {
-                        return res.status(500).json({ message: 'mot de passe incorrect' })
+                        return res.status(400).json({ message: 'mot de passe incorrect' })
                     }
                     if (req.body.userNewPassword !== req.body.userNewPasswordC) {
                         return res.status(500).json({ message: 'entrez le même mot de passe' })
@@ -137,7 +137,7 @@ const signupUser = (async (req, res) => {
         return res.json({ message: "User already exists" });
     }
     if (req.body.userPassword !== req.body.userPasswordC) {
-        return res.status(500).json({ message: 'mot de passe incorrect' })
+        return res.status(400).json({ message: 'mot de passe incorrect' })
     }
     if (req.body.userPassword === req.body.userPasswordC) {
         bcrypt.hash(req.body.userPassword, 10)
@@ -164,12 +164,12 @@ const signupUser = (async (req, res) => {
 const signinUser = (async (req, res) => {
     const user = await User.findOne({ userEmail: req.body.userEmail })
     if (!user) {
-        res.status(500).json({ message: 'mot de passe et/ou email incorrect' })
+        res.status(400).json({ message: 'mot de passe et/ou email incorrect' })
     }
     if (user) {
         const valid = await bcrypt.compare(req.body.userPassword, user.userPassword)
-        if (valid == false) {
-            res.status(500).json({ message: 'mot de passe et/ou email incorrect' })
+        if (valid === false) {
+            res.status().json({ message: 'mot de passe et/ou email incorrect' })
         } else {
             console.log(user.userPassword);
             const token = createToken(user._id)
