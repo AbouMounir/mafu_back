@@ -169,7 +169,7 @@ const signinUser = (async (req, res) => {
     if (user) {
         const valid = await bcrypt.compare(req.body.userPassword, user.userPassword)
         if (valid === false) {
-            res.status().json({ message: 'mot de passe et/ou email incorrect' })
+            res.status(400).json({ message: 'mot de passe et/ou email incorrect' })
         } else {
             console.log(user.userPassword);
             const token = createToken(user._id)
