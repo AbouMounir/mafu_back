@@ -99,7 +99,10 @@ const updateUser = (async (req, res) => {
             )
             .catch(error => console.log(error))
     } catch (error) {
-        console.log(error);
+        res.status(500).json({
+            message: "updateUser doesn't work",
+            error: error.message
+        })
     }
 })
 
@@ -127,7 +130,10 @@ const updateUserPassword = (async (req, res) => {
                         })
         }
     } catch (error) {
-        console.log(error);
+        res.status(500).json({
+            message: "updateUserPassword doesn't work",
+            error: error.message
+        })
     }
 })
 
