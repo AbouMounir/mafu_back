@@ -140,7 +140,7 @@ const updateUserPassword = (async (req, res) => {
 const signupUser = (async (req, res) => {
     const existingUser = await User.findOne({ userEmail: req.body.userEmail });
     if (existingUser) {
-        return res.json({ message: "User already exists" });
+        return res.status(400).json({ message: "User already exists" });
     }
     if (req.body.userPassword !== req.body.userPasswordC) {
         return res.status(400).json({ message: 'mot de passe incorrect' })
