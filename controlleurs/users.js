@@ -25,11 +25,11 @@ const getUser = (async (req, res) => {
 const verifyingUserNumber = (async (req, res) => {
     const user = await User.findOne({ userNumber: req.body.userNumber })
     if (user) {
-        res.status(200).json({
+        return res.status(200).json({
             message: "user found"
         })
     }
-    res.status(400).json({
+    return res.status(400).json({
         message: "user no found"
     })
 })
