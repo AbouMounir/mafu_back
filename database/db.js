@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
+import {Model as sequelize} from "sequelize";
 dotenv.config({ path: './config/.env' })
 const connectDb = async () => {
 
@@ -12,5 +13,5 @@ const connectDb = async () => {
     }
 }
 
-
+sequelize.sync()
 export default connectDb;
