@@ -24,7 +24,11 @@ const FloodZone = mongoose.model('zones_inondees', {
     floodImage: {
         type: String,
         default : ""
+    },
+    floodCategory : {
+        type : String,
+        default : ""
     }
-});
+}, { timestamps: true });
 
 export default FloodZone ;

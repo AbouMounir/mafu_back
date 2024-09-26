@@ -30,6 +30,6 @@ const User = mongoose.model('users', {
     userLocation: {
         type: String,
     },
-});
+}, { timestamps: true });
 
 export default User ;

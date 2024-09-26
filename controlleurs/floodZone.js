@@ -11,7 +11,8 @@ const addFloodZone = ( async (req, res) => {
             },
             floodDescription: req.body.floodDescription,
             floodIntensity: req.body.floodIntensity,
-            floodImage: req.body.floodImage
+            floodImage: req.body.floodImage,
+            floodCategory : req.body.floodCategory
         })
         
         await zoneInondee.save()
