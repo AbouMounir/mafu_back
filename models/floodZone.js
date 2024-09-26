@@ -28,6 +28,14 @@ const FloodZone = mongoose.model('zones_inondees', {
     floodCategory : {
         type : String,
         default : ""
+    },
+    temperaty : {
+        type : String,
+        default : ""
+    },
+    weather : {
+        type: String,
+        default : ""
     }
 }, { timestamps: true });
 

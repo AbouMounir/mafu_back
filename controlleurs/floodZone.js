@@ -27,7 +27,7 @@ const addFloodZone = ( async (req, res) => {
 
 const getFloodsZones = (async (req, res) => {
 
-    const floodZones = await FloodZone.find({});
+    const floodZones = await FloodZone.find();
     res.status(201).json({
         data : floodZones,
         message : "get floods zones informations"
