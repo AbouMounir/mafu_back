@@ -36,6 +36,11 @@ const FloodZone = mongoose.model('zones_inondees', {
     weather : {
         type: String,
         default : ""
+    },
+    user : {
+        type : mongoose.Schema.Types.ObjectId,
+        ref : "users",
+        required : false
     }
 });
 
