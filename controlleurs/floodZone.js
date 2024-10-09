@@ -28,7 +28,7 @@ const addFloodZone = ( async (req, res) => {
 
 const getFloodsZones = (async (req, res) => {
 
-    const floodZones = await FloodZone.find().populate({"path": "users"});
+    const floodZones = await FloodZone.find().populate({"path": "user"});
     res.status(201).json({
         data : floodZones,
         message : "get floods zones informations"
@@ -36,7 +36,7 @@ const getFloodsZones = (async (req, res) => {
 })
 
 const getFloodZone = (async (req, res) => {
-    const floodZone = await FloodZone.findOne({ _id: req.body.floodZoneId }).populate({"path": "users"})
+    const floodZone = await FloodZone.findOne({ _id: req.body.floodZoneId }).populate({"path": "user"})
     res.status(201).json({
         data: floodZone,
         message: "get flood zone information"
@@ -48,4 +48,19 @@ const getFloodZone = (async (req, res) => {
 }) */
 
 export { addFloodZone, getFloodZone, getFloodsZones };
+
+/*
+{
+    "userId": "66bb91eb2b04be5e0f5e2ca9",
+    "floodScene": "Deux Plateaux",
+    "longitude": "-3.9926",
+    "latitude": "5.3642",
+    "floodDescription": "description de l’alerte à Deux Plateaux ",
+    "floodIntensity": "forte",
+    "floodImage": "",
+    "floodCategory": "inondation",
+    "temperaty": "32",
+    "weather": "Ensoleillé"
+    }
+*/
 

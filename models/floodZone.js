@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const FloodZone = mongoose.model('zones_inondees', {
+const FloodZoneSchema = new mongoose.Schema({
     floodScene: {
         type: String
     },
@@ -43,5 +43,7 @@ const FloodZone = mongoose.model('zones_inondees', {
         required : false
     }
 });
+
+const FloodZone = mongoose.model('zones_inondees', FloodZoneSchema)
 
 export default FloodZone ;
