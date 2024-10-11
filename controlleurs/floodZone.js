@@ -16,9 +16,10 @@ const addFloodZone = ( async (req, res) => {
             user : req.userId
         })
 
+        await zoneInondee.save()
+
         const populatedZone = await FloodZone.findById(zoneInondee._id).populate('user', 'userFirstName userLastName userEmail');
         
-        await zoneInondee.save()
         res.status(201).json({
             message: 'Objet enregistred',
             data : populatedZone
