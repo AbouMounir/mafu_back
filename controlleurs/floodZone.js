@@ -15,11 +15,13 @@ const addFloodZone = ( async (req, res) => {
             floodCategory : req.body.floodCategory,
             user : req.userId
         })
+
+        const populatedZone = await FloodZone.findById(zoneInondee._id).populate('user', 'userFirstName userLastName userEmail');
         
         await zoneInondee.save()
         res.status(201).json({
             message: 'Objet enregistred',
-            data : zoneInondee
+            data : populatedZone
         })
     } catch (error) {
         console.log(error);
@@ -28,7 +30,7 @@ const addFloodZone = ( async (req, res) => {
 
 const getFloodsZones = (async (req, res) => {
 
-    const floodZones = await FloodZone.find().populate({"path": "user"});
+    const floodZones = await FloodZone.find().populate('user', 'userFirstName userLastName userEmail');
     res.status(201).json({
         data : floodZones,
         message : "get floods zones informations"
@@ -36,7 +38,7 @@ const getFloodsZones = (async (req, res) => {
 })
 
 const getFloodZone = (async (req, res) => {
-    const floodZone = await FloodZone.findOne({ _id: req.body.floodZoneId }).populate({"path": "user"})
+    const floodZone = await FloodZone.findOne({ _id: req.body.floodZoneId }).populate('user', 'userFirstName userLastName userEmail');
     res.status(201).json({
         data: floodZone,
         message: "get flood zone information"
