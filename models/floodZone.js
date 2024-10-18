@@ -29,7 +29,7 @@ const FloodZoneSchema = new mongoose.Schema({
         type : String,
         default : ""
     },
-    temperaty : {
+    temperature : {
         type : String,
         default : ""
     },
