@@ -15,6 +15,7 @@ const addFloodZone = ( async (req, res) => {
             floodCategory : req.body.floodCategory,
             weather: req.body.weather,
             temperature : req.body.temperature,
+            floodDate : req.body.floodDate,
             user : req.userId
         })
 
