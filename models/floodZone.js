@@ -10,7 +10,7 @@ const FloodZoneSchema = new mongoose.Schema({
     },
     floodDate: {
         type: Date,
-        default : Date.now
+        default : ""
     },
     floodDescription: {
         type: String,
@@ -41,7 +41,11 @@ const FloodZoneSchema = new mongoose.Schema({
         type : mongoose.Schema.Types.ObjectId,
         ref : "users",
         required : false
-    }
+    },
+    dataCreatedAt : {
+        type : Date,
+        default : Date.now()
+    } 
 });
 
 const FloodZone = mongoose.model('zones_inondees', FloodZoneSchema)

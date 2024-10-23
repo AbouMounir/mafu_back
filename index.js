@@ -5,13 +5,21 @@ import express from "express";
 import connectDb from "./database/db.js";
 import routerFloodZone from "./routes/floodZone.js";
 import routerUser from "./routes/users.js";
+import cors from 'cors';
 
+const corsOptions = {
+    "origin": "*",
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+    "preflightContinue": false,
+    "optionsSuccessStatus": 204
+  }
 
 const app = express();
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
+app.use(cors(corsOptions))
 
 dotenv.config({ path: './config/.env' })
 connectDb();
