@@ -29,9 +29,6 @@ const userSchema = new mongoose.Schema({
     },
     userLocation: {
         type: String,
-    },
-    mailProfil : {
-        type : String
     }
 });
 

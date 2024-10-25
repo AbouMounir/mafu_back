@@ -21,7 +21,7 @@ function getGravatarUrl(email, size = 80) {
         return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
     }
 
-    
+
 const getUser = (async (req, res) => {
     console.log(req.userId);
     const user = await User.findOne({ _id: req.userId })
@@ -166,7 +166,7 @@ const signupUser = (async (req, res) => {
                     userFirstName: req.body.userFirstName,
                     userLastName: req.body.userLastName,
                     userPassword: hash,
-                    mailProfil : mailProfil
+                    image : mailProfil
                 })
                 await user.save()
                 const token = createToken(user._id)
