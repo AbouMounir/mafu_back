@@ -166,7 +166,7 @@ const signupUser = (async (req, res) => {
                     userFirstName: req.body.userFirstName,
                     userLastName: req.body.userLastName,
                     userPassword: hash,
-                    image : mailProfil
+                    image : req.body.image || mailProfil
                 })
                 await user.save()
                 const token = createToken(user._id)
