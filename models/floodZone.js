@@ -45,6 +45,10 @@ const FloodZoneSchema = new mongoose.Schema({
     dataCreatedAt : {
         type : Date,
         default : Date.now()
+    },
+    status : {
+        type : String,
+        default : "pending"
     } 
 });
 

@@ -30,6 +30,9 @@ const userSchema = new mongoose.Schema({
     userLocation: {
         type: String,
     },
+    mailProfil : {
+        type : String
+    }
 });
 
 const User = mongoose.model('users', userSchema);

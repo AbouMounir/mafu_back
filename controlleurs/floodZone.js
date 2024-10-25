@@ -1,8 +1,24 @@
+import axios from 'axios';
 import FloodZone from '../models/floodZone.js';
+import { config } from 'dotenv';
 
+config({path : "../config/.env"})
 
 const addFloodZone = ( async (req, res) => {
     try {
+        let temperature = "";
+        let weather = "";
+        let openWeatherUrl  = `https://api.openweathermap.org/data/3.0/onecall?lat=${req.body.latitude}&lon=${req.body.longitude}&units=metric&lang=fr&appid=${process.env.OPEN_WEATHER_KEY}`
+        
+        await axios.get(openWeatherUrl)
+            .then(response => {
+                let data = response.data
+                temperature = data.current.temp
+                weather = data.current.weather[0].description
+            })
+            .catch(
+                error => {console.log(error); } 
+            )
         const zoneInondee = await new FloodZone({
             floodScene:req.body.floodScene,
             floodLocation: {
@@ -13,8 +29,8 @@ const addFloodZone = ( async (req, res) => {
             floodIntensity: req.body.floodIntensity,
             floodImage: req.body.floodImage,
             floodCategory : req.body.floodCategory,
-            weather: req.body.weather,
-            temperature : req.body.temperature,
+            weather: weather,
+            temperature : temperature,
             floodDate : req.body.floodDate,
             user : req.userId
         })
@@ -31,6 +47,7 @@ const addFloodZone = ( async (req, res) => {
         console.log(error);
     }
 })
+
 
 const getFloodsZones = (async (req, res) => {
 

@@ -6,6 +6,7 @@ import connectDb from "./database/db.js";
 import routerFloodZone from "./routes/floodZone.js";
 import routerUser from "./routes/users.js";
 import cors from 'cors';
+//import FloodZone from "./models/floodZone.js";
 
 const corsOptions = {
     "origin": "*",
@@ -26,6 +27,17 @@ connectDb();
 app.get('/', (req,res) => res.send("mafu api"))
 app.use('/users', routerUser)
 app.use('/zones-inondees', routerFloodZone)
+
+/*
+const uploadFloodsZones = (async (req, res) => {
+    const floodZones = await FloodZone.find();
+    floodZones.forEach(async zoneInondee => {
+        zoneInondee.temperature = "Inondation";
+        await zoneInondee.save()
+    })
+})
+    uploadFloodsZones();
+*/
 
 app.listen(3000, (err) => {
     if (err) {

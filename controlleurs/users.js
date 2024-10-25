@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/users.js';
-
+import crypto from 'crypto';
 
 // Fonction pour créer un jeton JWT
 const createToken = (userId) => {
@@ -14,6 +14,14 @@ const createToken = (userId) => {
     await User.find({}).then(item => res.status(200).json({ data: item }))
 }) */
 
+// fonction pour créer un avatar pour chaque user
+function getGravatarUrl(email, size = 80) {
+        const trimmedEmail = email.trim().toLowerCase();
+        const hash = crypto.createHash('sha256').update(trimmedEmail).digest('hex');
+        return `https://www.gravatar.com/avatar/${hash}?s=${size}&d=identicon`;
+    }
+
+    
 const getUser = (async (req, res) => {
     console.log(req.userId);
     const user = await User.findOne({ _id: req.userId })
@@ -148,12 +156,17 @@ const signupUser = (async (req, res) => {
     if (req.body.userPassword === req.body.userPasswordC) {
         bcrypt.hash(req.body.userPassword, 10)
             .then(async hash => {
+                console.log("before crypto");
+                const mailProfil = getGravatarUrl(req.body.userEmail)
+                console.log("after crypto");
+                
                 const user = new User({
                     userEmail: req.body.userEmail,
                     userNumber: req.body.userNumber,
                     userFirstName: req.body.userFirstName,
                     userLastName: req.body.userLastName,
-                    userPassword: hash
+                    userPassword: hash,
+                    mailProfil : mailProfil
                 })
                 await user.save()
                 const token = createToken(user._id)
