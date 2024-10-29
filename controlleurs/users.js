@@ -96,7 +96,7 @@ const updateUser = (async (req, res) => {
                     console.log(user);
                     user.image = req.body.image || user.image;
                     user.userEmail = req.body.userEmail || user.userEmail;
-                    user.userName = req.body.userFullName.split(" ").join('_');
+                    user.userName = req.body.userName || user.userName;
                     user.userFullName = req.body.userFullName || user.userFullName;
                     user.userNumber = req.body.userNumber || user.userNumber;
                     user.userLocation = req.body.userLocation || user.userLocation;
