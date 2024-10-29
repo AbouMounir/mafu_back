@@ -11,11 +11,7 @@ const userSchema = new mongoose.Schema({
         unique: true,
         default : ""
     },
-    userFirstName: {
-        type: String,
-        default : ""
-    },
-    userLastName: {
+    userFullName: {
         type: String,
         default : ""
     },
@@ -30,7 +26,7 @@ const userSchema = new mongoose.Schema({
     userLocation: {
         type: String,
     }
-});
+}, {timestamps : true});
 
 const User = mongoose.model('users', userSchema);
 

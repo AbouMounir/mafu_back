@@ -95,8 +95,7 @@ const updateUser = (async (req, res) => {
                     console.log(user);
                     user.image = req.body.image || user.image;
                     user.userEmail = req.body.userEmail || user.userEmail;
-                    user.userFirstName = req.body.userFirstName || user.userFirstName;
-                    user.userLastName = req.body.userLastName || user.userLastName;
+                    user.userFullName = req.body.userFullName || user.userFullName;
                     user.userNumber = req.body.userNumber || user.userNumber;
                     user.userLocation = req.body.userLocation || user.userLocation;
                     await user.save();
@@ -146,7 +145,7 @@ const updateUserPassword = (async (req, res) => {
 })
 
 const signupUser = (async (req, res) => {
-    const existingUser = await User.findOne({ userEmail: req.body.userEmail });
+    const existingUser = await User.findOne({$or : [{userEmail: req.body.userEmail},{userNumber: req.body.userNumber}] });
     if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
     }
@@ -163,8 +162,7 @@ const signupUser = (async (req, res) => {
                 const user = new User({
                     userEmail: req.body.userEmail,
                     userNumber: req.body.userNumber,
-                    userFirstName: req.body.userFirstName,
-                    userLastName: req.body.userLastName,
+                    userFullName: req.body.userFullName,
                     userPassword: hash,
                     image : req.body.image || mailProfil
                 })
