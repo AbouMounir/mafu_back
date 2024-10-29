@@ -96,7 +96,7 @@ const updateUser = (async (req, res) => {
                     user.image = req.body.image || user.image;
                     user.userEmail = req.body.userEmail || user.userEmail;
                     user.userName = req.body.userFullName;
-                    user.userFirstName = req.body.userFullName || user.userFullName;
+                    user.userFullName = req.body.userFullName || user.userFullName;
                     user.userNumber = req.body.userNumber || user.userNumber;
                     user.userLocation = req.body.userLocation || user.userLocation;
                     await user.save();
@@ -164,7 +164,7 @@ const signupUser = (async (req, res) => {
                     userName: userName,
                     userPassword: hash,
                     image : req.body.image || mailProfil
-                });
+                })
                 await user.save()
                 const token = createToken(user._id)
                 res.status(201).json({
