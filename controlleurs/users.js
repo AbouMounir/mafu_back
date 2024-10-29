@@ -92,11 +92,10 @@ const updateUser = (async (req, res) => {
         User.findOne({ _id: req.userId })
             .then(
                 async user => {
-                    const userFullName = req.body.userFirstName + " " + req.body.userLastName || user.userName
                     console.log(user);
                     user.image = req.body.image || user.image;
                     user.userEmail = req.body.userEmail || user.userEmail;
-                    user.userName = userFullName;
+                    user.userName = req.body.userFullName;
                     user.userFirstName = req.body.userFullName || user.userFullName;
                     user.userNumber = req.body.userNumber || user.userNumber;
                     user.userLocation = req.body.userLocation || user.userLocation;
