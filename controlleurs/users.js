@@ -89,6 +89,7 @@ const deleteUser = (async (req, res) => {
 
 const updateUser = (async (req, res) => {
     try {
+        console.log(req.userId);
         User.findOne({ _id: req.userId })
             .then(
                 async user => {
