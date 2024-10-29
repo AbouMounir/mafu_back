@@ -95,7 +95,7 @@ const updateUser = (async (req, res) => {
                     console.log(user);
                     user.image = req.body.image || user.image;
                     user.userEmail = req.body.userEmail || user.userEmail;
-                    user.userName = req.body.userFullName;
+                    user.userName = req.body.userFullName.split(" ").join('_');
                     user.userFullName = req.body.userFullName || user.userFullName;
                     user.userNumber = req.body.userNumber || user.userNumber;
                     user.userLocation = req.body.userLocation || user.userLocation;
@@ -105,7 +105,11 @@ const updateUser = (async (req, res) => {
                     })
                 }
             )
-            .catch(error => console.log(error))
+            .catch(error => 
+                res.status(500).json({
+                message: "user findOne doesn't work",
+                error: error.message
+            }))
     } catch (error) {
         res.status(500).json({
             message: "updateUser doesn't work",
