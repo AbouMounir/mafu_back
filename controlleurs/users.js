@@ -92,10 +92,13 @@ const updateUser = (async (req, res) => {
         User.findOne({ _id: req.userId })
             .then(
                 async user => {
+                    const userFullName = req.body.userFirstName + " " + req.body.userLastName || user.userName
                     console.log(user);
                     user.image = req.body.image || user.image;
                     user.userEmail = req.body.userEmail || user.userEmail;
-                    user.userFullName = req.body.userFullName || user.userFullName;
+                    user.userName = userFullName;
+                    user.userFirstName = req.body.userFirstName || user.userFirstName;
+                    user.userLastName = req.body.userLastName || user.userLastName;
                     user.userNumber = req.body.userNumber || user.userNumber;
                     user.userLocation = req.body.userLocation || user.userLocation;
                     await user.save();
@@ -155,17 +158,15 @@ const signupUser = (async (req, res) => {
     if (req.body.userPassword === req.body.userPasswordC) {
         bcrypt.hash(req.body.userPassword, 10)
             .then(async hash => {
-                console.log("before crypto");
-                const mailProfil = getGravatarUrl(req.body.userEmail)
-                console.log("after crypto");
-                
+                const mailProfil = getGravatarUrl(req.body.userEmail);
+                const userName = req.body.userEmail.split('@')[0] ;               
                 const user = new User({
                     userEmail: req.body.userEmail,
                     userNumber: req.body.userNumber,
-                    userFullName: req.body.userFullName,
+                    userName: userName,
                     userPassword: hash,
                     image : req.body.image || mailProfil
-                })
+                });
                 await user.save()
                 const token = createToken(user._id)
                 res.status(201).json({

@@ -11,7 +11,15 @@ const userSchema = new mongoose.Schema({
         unique: true,
         default : ""
     },
-    userFullName: {
+    userFirstName: {
+        type: String,
+        default : ""
+    },
+    userLastName: {
+        type: String,
+        default : ""
+    },
+    userName: {
         type: String,
         default : ""
     },
