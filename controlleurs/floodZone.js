@@ -66,9 +66,7 @@ const getFloodZone = (async (req, res) => {
     })
 })
 
-/* const deleteZoneInondee = (async (req, res) => {
-    await FloodZone.deleteOne({ _id: req.params.id }).then(result => res.status(201).json(result))
-}) */
+
 
 export { addFloodZone, getFloodZone, getFloodsZones };
 
