@@ -98,6 +98,8 @@ const updateUser = (async (req, res) => {
                     user.userEmail = req.body.userEmail || user.userEmail;
                     user.userName = req.body.userName || user.userName;
                     user.userFullName = req.body.userFullName || user.userFullName;
+                    user.userFirstName = req.body.userFirstName || userFirstName;
+                    user.userLastName =  req.body.userLastName || userLastName;
                     user.userNumber = req.body.userNumber || user.userNumber;
                     user.userLocation = req.body.userLocation || user.userLocation;
                     await user.save();
@@ -166,6 +168,8 @@ const signupUser = (async (req, res) => {
                 const user = new User({
                     userEmail: req.body.userEmail,
                     userNumber: req.body.userNumber,
+                    userFirstName : req.body.userFirstName,
+                    userLastName : req.body.userLastName,
                     userName: userName,
                     userPassword: hash,
                     image : req.body.image || mailProfil
