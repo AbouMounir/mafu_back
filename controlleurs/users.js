@@ -81,7 +81,7 @@ const updateLandlordPasswordAfterForgotPassword = (async (req, res) => {
 })
 
 const deleteUser = (async (req, res) => {
-    User.deleteOne({ _id: req.req.userId })
+    User.deleteOne({ _id: req.userId })
         .then(result => res.status(200).json({
             data: result
         }))
@@ -90,29 +90,25 @@ const deleteUser = (async (req, res) => {
 const updateUser = (async (req, res) => {
     try {
         console.log(req.userId);
-        User.findOne({ _id: req.userId })
-            .then(
-                async user => {
-                    console.log(user);
-                    user.image = req.body.image || user.image;
-                    user.userEmail = req.body.userEmail || user.userEmail;
-                    user.userName = req.body.userName || user.userName;
-                    user.userFullName = req.body.userFullName || user.userFullName;
-                    user.userFirstName = req.body.userFirstName || userFirstName;
-                    user.userLastName =  req.body.userLastName || userLastName;
-                    user.userNumber = req.body.userNumber || user.userNumber;
-                    user.userLocation = req.body.userLocation || user.userLocation;
-                    await user.save();
-                    res.status(200).json({
-                        data: user
-                    })
-                }
-            )
-            .catch(error => 
-                res.status(500).json({
-                message: "user findOne doesn't work",
-                error: error.message
-            }))
+        const user = await User.findOne({ _id: req.userId }).catch(error => 
+            res.status(500).json({
+            message: "user findOne doesn't work",
+            error: error.message
+        }))
+            
+        console.log(user);
+        user.image = req.body.image || user.image;
+        user.userEmail = req.body.userEmail || user.userEmail;
+        user.userName = req.body.userName || user.userName;
+        user.userFullName = req.body.userFullName || user.userFullName;
+        user.userFirstName = req.body.userFirstName || userFirstName;
+        user.userLastName =  req.body.userLastName || userLastName;
+        user.userNumber = req.body.userNumber || user.userNumber;
+        user.userLocation = req.body.userLocation || user.userLocation;
+        await user.save();
+        res.status(200).json({
+            data: user
+        })
     } catch (error) {
         res.status(500).json({
             message: "updateUser doesn't work",
