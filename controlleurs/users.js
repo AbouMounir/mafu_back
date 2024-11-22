@@ -96,13 +96,14 @@ const updateUser = (async (req, res) => {
             error: error.message
         }))
             
-        console.log(user);
+        console.log(req.body.image);
+        
         user.image = req.body.image || user.image;
         user.userEmail = req.body.userEmail || user.userEmail;
         user.userName = req.body.userName || user.userName;
         user.userFullName = req.body.userFullName || user.userFullName;
-        user.userFirstName = req.body.userFirstName || userFirstName;
-        user.userLastName =  req.body.userLastName || userLastName;
+        user.userFirstName = req.body.userFirstName || user.userFirstName;
+        user.userLastName =  req.body.userLastName || user.userLastName;
         user.userNumber = req.body.userNumber || user.userNumber;
         user.userLocation = req.body.userLocation || user.userLocation;
         await user.save();
@@ -192,7 +193,6 @@ const signinUser = (async (req, res) => {
         if (!valid) {
             res.status(400).json({ message: 'mot de passe et/ou email incorrect' })
         } else {
-            console.log(user.userPassword);
             const token = createToken(user._id)
             res.status(201).json({
                 message: 'User conneted!',

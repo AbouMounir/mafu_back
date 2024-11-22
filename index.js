@@ -6,7 +6,6 @@ import connectDb from "./database/db.js";
 import routerFloodZone from "./routes/floodZone.js";
 import routerUser from "./routes/users.js";
 import cors from 'cors';
-import FloodZone from "./models/floodZone.js";
 //import FloodZone from "./models/floodZone.js";
 
 const corsOptions = {
@@ -39,13 +38,6 @@ const uploadFloodsZones = (async (req, res) => {
 })
     uploadFloodsZones();
 */
-
-const deleteZoneInondee = (async (req, res) => {
-    await FloodZone.deleteMany({ floodScene: "Avenue Usher Assouan" }).then(result => console.log(result)
-    )
-}) 
-
-deleteZoneInondee()
 
 app.listen(3000, (err) => {
     if (err) {
