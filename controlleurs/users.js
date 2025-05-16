@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/users.js';
 import crypto from 'crypto';
@@ -43,7 +43,7 @@ const verifyingUserNumber = (async (req, res) => {
 })
 
 const updateLandlordPasswordAfterForgotPassword = (async (req, res) => {
-    try {
+    try {  
         await User.findOne({ userNumber: req.body.userNumber })
             .then(
                 async user => {
@@ -150,6 +150,8 @@ const updateUserPassword = (async (req, res) => {
 })
 
 const signupUser = (async (req, res) => {
+    console.log(req);
+    
     const existingUser = await User.findOne({$or : [{userEmail: req.body.userEmail},{userNumber: req.body.userNumber}] });
     if (existingUser) {
         return res.status(400).json({ message: "User already exists" });
@@ -158,10 +160,13 @@ const signupUser = (async (req, res) => {
         return res.status(400).json({ message: 'mot de passe incorrect' })
     }
     if (req.body.userPassword === req.body.userPasswordC) {
-        bcrypt.hash(req.body.userPassword, 10)
-            .then(async hash => {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(req.body.userPassword, salt)
+        if (hash) {
+                console.log("hash");
                 const mailProfil = getGravatarUrl(req.body.userEmail);
-                const userName = req.body.userEmail.split('@')[0] ;               
+                const userName = req.body.userEmail.split('@')[0] ;
+                console.log("begin user");
                 const user = new User({
                     userEmail: req.body.userEmail,
                     userNumber: req.body.userNumber,
@@ -171,6 +176,8 @@ const signupUser = (async (req, res) => {
                     userPassword: hash,
                     image : req.body.image || mailProfil
                 })
+                console.log("created");
+                
                 await user.save()
                 const token = createToken(user._id)
                 res.status(201).json({
@@ -178,13 +185,12 @@ const signupUser = (async (req, res) => {
                     data: user,
                     token: token
                 })
-            })
-            .catch(err => res.status(500).json({ error: err }))
+            }
     }
 });
 
 const signinUser = (async (req, res) => {
-    const user = await User.findOne({ userEmail: req.body.userEmail })
+    const user = await User.findOne({$or : [{userEmail: req.body.userEmail},{userNumber: req.body.userNumber}] });
     if (!user) {
         res.status(400).json({ message: 'mot de passe et/ou email incorrect' })
     }

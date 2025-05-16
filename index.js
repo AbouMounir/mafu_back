@@ -13,7 +13,7 @@ const corsOptions = {
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "preflightContinue": false,
     "optionsSuccessStatus": 204
-  }
+}
 
 const app = express();
 
